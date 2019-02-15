@@ -1,12 +1,13 @@
 <template>
   <div id="app">
     <div class="toggle toggle--text">
-			<input type="checkbox" id="toggle--text" class="toggle--checkbox">
-			<label class="toggle--btn" for="toggle--text" data-label-on="show"  data-label-off="hidden" @click="toggle"></label>
-		</div>
+        <input type="checkbox" id="toggle--text" class="toggle--checkbox">
+		<label class="toggle--btn" for="toggle--text" data-label-on="Box"  data-label-off="Circle" @click="toggle"></label>
+    </div>
 
-    <FadeTransition>
-        <div class="box" v-if="show"></div>
+    <FadeTransition mode="out-in">
+        <div key="box" v-if="show" class="box"></div>
+        <div key="circle" v-else class="circle"></div>
     </FadeTransition>
   </div>
 </template>
@@ -113,12 +114,16 @@ export default {
     color: #db4c00;
 }
 
-.box {
+.box,
+.circle {
   width: 200px;
   height: 200px;
   margin: 20px auto;
   background-color: rgb(208, 141, 213);
   box-shadow: rgba(208, 141, 213, 0.5) 0px 6px 20px;
   border-radius: 10px;
+}
+.circle {
+    border-radius: 100%;
 }
 </style>
