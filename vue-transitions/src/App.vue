@@ -4,8 +4,12 @@
         <input type="checkbox" id="toggle--text" class="toggle--checkbox">
 		<label class="toggle--btn" for="toggle--text" data-label-on="Box"  data-label-off="Circle" @click="toggle"></label>
     </div>
-
-    <FadeTransition mode="out-in">
+    <div class="duration">
+        <label for="duration">持续时间（Duration）:</label>
+        <input type="range" min="100" max="3000" v-model="duration" id="duration" />
+        <span>{{duration}}ms</span>
+    </div>
+    <FadeTransition mode="out-in" :duration="durationNumber">
         <div key="box" v-if="show" class="box"></div>
         <div key="circle" v-else class="circle"></div>
     </FadeTransition>
@@ -22,13 +26,19 @@ export default {
   },
   data () {
     return {
-      show: true
+      show: true,
+      duration: 300
     }
   },
   methods: {
     toggle () {
       this.show = !this.show
     }
+  },
+  computed: {
+      durationNumber() {
+          return parseInt(this.duration);
+      }
   }
 }
 </script>
@@ -125,5 +135,7 @@ export default {
 }
 .circle {
     border-radius: 100%;
+    background-color: rgb(59, 99, 202);
+    box-shadow: rgba(100, 134, 196, 0.5) 0px 6px 20px;
 }
 </style>
