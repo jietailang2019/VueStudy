@@ -1,12 +1,14 @@
 <template>
-    <transition 
-        name="fade" 
+    <component 
+        :is="type"
+        :tag="tag"
         v-bind="$attrs" 
         v-on="hooks"
         enter-active-class="fadeIn"
-        leave-active-class="fadeOut">
+        leave-active-class="fadeOut"
+        move-class="fade-move">
         <slot />
-    </transition>
+    </component>
 </template>
 
 <script>
@@ -16,15 +18,27 @@
             duration: {
                 type: Number,
                 default: 300
+            },
+            group : {
+                type: Boolean,
+                default: false
+            },
+            tag: {
+                type: String,
+                default: 'div'
             }
         },
         computed: {
+            type() {
+                return this.group ? 'transition-group' : 'transition'
+            },
             hooks() {
                 return {
                     beforeEnter:this.setDuration,
                     afterEnter: this.cleanUpDuration,
                     beforeLeave: this.setDuration,
                     afterLeave: this.cleanUpDuration,
+                    leave: this.setAbsolutePosition,
                     ...this.$listeners
                 }
             }
@@ -35,6 +49,11 @@
             },
             cleanUpDuration(el){
                 el.style.animationDuration= ''
+            },
+            setAbsolutePosition(el) {
+                if (this.group) {
+                    el.style.position = 'absolute'
+                }
             }
         }
     }
@@ -64,5 +83,8 @@
 }
 .fadeOut {
     animation-name: fadeOut;
+}
+.fade-move {
+    transition: transform .3s ease-out;
 }
 </style>
